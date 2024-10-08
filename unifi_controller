@@ -1,0 +1,20 @@
+services:
+  unifi:
+    user: unifi
+    image: "jacobalberty/unifi:latest"
+    container_name: unifi-controller
+    restart: unless-stopped
+    init: true
+    ports:
+      - "8080:8080/tcp" # Kommunikation zwischen Geräten und Controllern
+      - "8880:8880/tcp" # HTTP-Umleitungen
+      # - "8443:8443/tcp" # HTTPS-Umleitungen als sichere Verbindung zur GUI/API des Controllers, die im Webbrowser angezeigt wird
+      # - "8843:8843/tcp" # Ähnlich wie Port 8880, aber für HTTPS-Umleitungen, um eine sichere Verbindung zu gewährleisten.
+      - "3478:3478/udp" # Session Traversal Utilities for NAT (STUN) Protokoll, um öffentliche IP-Adresse und die Art der NAT zu ermitteln
+      # - "10001:10001/udp" # Erkennung von Access Points, um Geräte im Netzwerk zu finden und zu identifizieren
+      - "6789:6789/tcp" # Geschwindigkeitstests, um die Netzwerkleistung zu messen
+      # - "1900:1900/udp" # "Make application discoverable on L2 network" in the UniFi Network settings
+    environment:
+      TZ: Europe/Berlin
+    volumes:
+      - ./data:/unifi
